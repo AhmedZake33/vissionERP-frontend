@@ -1,0 +1,65 @@
+/*================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+/*! rtl:begin:ignore */
+
+// ============================================
+// ICON FIXES — Keep all feather/SVG icons in their natural shape
+// in RTL mode. Only genuinely directional elements (breadcrumb
+// chevrons, prev/next navigation arrows) should be flipped.
+// ============================================
+
+// 1. General feather icons: never rotate.
+//    Covers chevrons, arrows, and ALL other feather icons that
+//    various Vuexy SCSS files blanket-rotate for RTL.
+[dir='rtl'] svg.feather {
+  transform: none !important;
+}
+
+// 2. Pagination: reset all page-link SVGs, then flip only prev/next.
+[dir='rtl'] .pagination .page-item .page-link svg {
+  transform: none !important;
+}
+[dir='rtl'] .pagination .page-item.prev-item .page-link svg,
+[dir='rtl'] .pagination .page-item.prev .page-link svg,
+[dir='rtl'] .pagination .page-item.previous .page-link svg,
+[dir='rtl'] .pagination .page-item.next-item .page-link svg,
+[dir='rtl'] .pagination .page-item.next .page-link svg {
+  transform: rotate(180deg) !important;
+}
+
+// 3. Carousel control arrows — keep natural; postcss-rtl handles direction.
+[dir='rtl'] .carousel-control-prev-icon,
+[dir='rtl'] .carousel-control-next-icon {
+  transform: none !important;
+}
+
+// 4. Flatpickr month nav arrows — keep natural.
+[dir='rtl'] .flatpickr-prev-month svg,
+[dir='rtl'] .flatpickr-next-month svg {
+  transform: none !important;
+}
+
+// 5. Calendar prev/next buttons — keep natural.
+[dir='rtl'] .app-calendar .fc-header-toolbar .fc-prev-button,
+[dir='rtl'] .app-calendar .fc-header-toolbar .fc-next-button {
+  transform: none !important;
+}
+
+// 6. FAQ / pricing images — keep natural.
+[dir='rtl'] .faq-navigation img,
+[dir='rtl'] .pricing-free-trial .pricing-trial-img {
+  transform: none !important;
+}
+
+// 7. Swiper navigation buttons — keep natural.
+[dir='rtl'] .swiper-button-prev,
+[dir='rtl'] .swiper-button-next {
+  transform: none !important;
+}
+
+/*! rtl:end:ignore */

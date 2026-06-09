@@ -1,0 +1,11 @@
+/* Base font — Arabic-aware */
+* {
+    font-family: "Times New Roman", serif;
+}
+
+/* Override for RTL (Arabic) — higher specificity overrides the * rule */
+[dir="rtl"],
+[dir="rtl"] * {
+    font-family: 'Segoe UI', 'Arial', 'Tahoma', 'Noto Sans Arabic', sans-serif;
+}
+
