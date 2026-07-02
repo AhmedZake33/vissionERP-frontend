@@ -38,7 +38,7 @@ export default {
     },
     isAdmin: state => {
       const role = state.user?.role || JSON.parse(localStorage.getItem('user') || 'null')?.role
-      return role === 'admin'
+      return ['admin', 'super_admin'].includes(role)
     },
     isDoctor: state => {
       const role = state.user?.role || JSON.parse(localStorage.getItem('user') || 'null')?.role
@@ -66,13 +66,13 @@ export default {
       const perms = state.permissions || JSON.parse(localStorage.getItem('permissions') || '[]')
       // Admin has all permissions
       const role = state.user?.role || JSON.parse(localStorage.getItem('user') || 'null')?.role
-      if (role === 'admin') return true
+      if (['admin', 'super_admin', 'company_owner'].includes(role)) return true
       return perms.includes(permission)
     },
     hasAnyPermission: state => permissions => {
       const perms = state.permissions || JSON.parse(localStorage.getItem('permissions') || '[]')
       const role = state.user?.role || JSON.parse(localStorage.getItem('user') || 'null')?.role
-      if (role === 'admin') return true
+      if (['admin', 'super_admin', 'company_owner'].includes(role)) return true
       return permissions.some(p => perms.includes(p))
     },
   },

@@ -12,6 +12,8 @@ import router from './router'
 import store from './store'
 import App from './App.vue'
 
+store.dispatch('language/initializeLocale', localStorage.getItem('locale') || 'en')
+
 // Global Components
 import './global-components'
 
@@ -62,6 +64,7 @@ require('@core/scss/core.scss')
 
 // import assets styles
 require('@/assets/scss/style.scss')
+require('@/assets/scss/erp.scss')
 
 Vue.config.productionTip = false
 

@@ -1,4 +1,4 @@
-import Vue from 'vue'
+﻿import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 // Routes
@@ -8,11 +8,13 @@ import admin from './routes/admin'
 import teacher from './routes/teacher'
 import student from './routes/student'
 import clinic from './routes/clinic'
+import erp from './routes/erp'
 import uiElements from './routes/ui-elements/index'
 import pages from './routes/pages'
 import chartsMaps from './routes/charts-maps'
 import formsTable from './routes/forms-tables'
 import others from './routes/others'
+import { erpHomeRouteNameForPermissions, hasErpPermission } from '@/utils/erpHomeRoute'
 
 Vue.use(VueRouter)
 
@@ -35,6 +37,7 @@ const router = new VueRouter({
     ...teacher,
     ...student,
     ...clinic,
+    ...erp,
     ...pages,
     ...chartsMaps,
     ...formsTable,
@@ -58,6 +61,9 @@ router.beforeEach((to, from, next) => {
 
   // Helper: get the home route name for a given role
   const homeForRole = role => {
+    if (role === 'super_admin') return 'super-admin-dashboard'
+    const permissions = JSON.parse(localStorage.getItem('permissions') || '[]')
+    if (hasErpPermission(permissions)) return erpHomeRouteNameForPermissions(permissions)
     if (role === 'doctor') return 'doctor-dashboard'
     if (role === 'assistant') return 'assistant-dashboard'
     if (role === 'sub-doctor') return 'doctor-reservations'
@@ -69,13 +75,17 @@ router.beforeEach((to, from, next) => {
     return next({ name: homeForRole(user && user.role) })
   }
 
+  if (to.meta.roles && (!user || !to.meta.roles.includes(user.role))) {
+    return next({ name: 'error-404' })
+  }
+
   // Check permission-based access
   if (to.meta.permissions && user) {
     const userPermissions = JSON.parse(localStorage.getItem('permissions') || '[]')
     const role = user.role || ''
 
     // Admin bypasses all permission checks
-    if (role !== 'admin') {
+    if (!['admin', 'super_admin', 'company_owner'].includes(role) && !(to.meta.ownerAccess && role === 'company_owner')) {
       const requiredPerms = to.meta.permissions
       const hasPermission = requiredPerms.some(p => userPermissions.includes(p))
 

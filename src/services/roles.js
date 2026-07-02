@@ -37,7 +37,19 @@ export default {
   },
 
   // Assign role to user
-  assignRole(userId, role) {
-    return axios.post(`/users/${userId}/assign-role`, { role })
+  assignRole(userId, roleId) {
+    return axios.post(`/users/${userId}/assign-role`, { role_id: roleId })
+  },
+
+  createUser(data) {
+    return axios.post('/users', data)
+  },
+
+  updateUser(userId, data) {
+    return axios.put(`/users/${userId}`, data)
+  },
+
+  deleteUser(userId) {
+    return axios.delete(`/users/${userId}`)
   },
 }

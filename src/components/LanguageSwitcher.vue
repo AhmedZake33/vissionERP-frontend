@@ -4,16 +4,16 @@
       <b-button
         :variant="currentLocale === 'en' ? 'primary' : 'outline-primary'"
         size="sm"
+        :title="$t('erp.language.english')"
         @click="switchLanguage('en')"
-        title="English"
       >
         EN
       </b-button>
       <b-button
         :variant="currentLocale === 'ar' ? 'primary' : 'outline-primary'"
         size="sm"
+        :title="$t('erp.language.arabic')"
         @click="switchLanguage('ar')"
-        title="العربية"
       >
         ع
       </b-button>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'LanguageSwitcher',
@@ -32,37 +32,25 @@ export default {
   methods: {
     ...mapActions('language', ['changeLocale']),
     switchLanguage(locale) {
-      if (this.currentLocale !== locale) {
-        this.changeLocale(locale)
-      }
-    }
-  }
+      if (this.currentLocale !== locale) this.changeLocale(locale)
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .language-switcher {
   .btn-group {
-    box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.1);
-    border-radius: 6px;
     overflow: hidden;
-    
-    .btn {
-      border-radius: 0;
-      min-width: 45px;
-      font-weight: 600;
-      font-size: 0.875rem;
-      
-      &:first-child {
-        border-top-left-radius: 6px;
-        border-bottom-left-radius: 6px;
-      }
-      
-      &:last-child {
-        border-top-right-radius: 6px;
-        border-bottom-right-radius: 6px;
-      }
-    }
+    border-radius: 6px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn {
+    min-width: 42px;
+    border-radius: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
   }
 }
 </style>

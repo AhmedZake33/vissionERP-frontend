@@ -1,13 +1,17 @@
-<template>
+﻿<template>
   <div class="auth-wrapper auth-v1 px-2">
+    <div class="position-absolute auth-language-switcher">
+      <language-switcher />
+    </div>
     <div class="auth-inner py-2">
       <b-card class="mb-0">
         <b-link class="brand-logo">
-          <h2 class="brand-text text-primary ml-1">{{ $t('clinic.brandText') }}</h2>
+          <span class="erp-auth__mark">V</span>
+          <h2 class="brand-text ml-1">VisionERP</h2>
         </b-link>
 
-        <b-card-title class="mb-1">{{ $t('clinic.welcome') }} 👋</b-card-title>
-        <b-card-text class="mb-2">{{ $t('clinic.signIn') }}</b-card-text>
+        <b-card-title class="mb-1">{{ $t('erp.login.title') }}</b-card-title>
+        <b-card-text class="mb-2">{{ $t('erp.login.description') }}</b-card-text>
 
         <b-alert v-if="error" variant="danger" show>
           {{ error }}
@@ -56,6 +60,9 @@
             <b-spinner v-if="loading" small class="mr-1" />
             {{ $t('actions.signIn') }}
           </b-button>
+          <p class="text-center mt-2 mb-0">
+            New to VisionERP? <b-link :to="{ name: 'register' }">Create an account</b-link>
+          </p>
         </b-form>
       </b-card>
     </div>
@@ -78,6 +85,7 @@ import {
   BSpinner,
 } from 'bootstrap-vue'
 import authService from '@/services/auth'
+import { erpHomePathForPermissions, hasErpPermission } from '@/utils/erpHomeRoute'
 
 export default {
   components: {
@@ -131,9 +139,12 @@ export default {
         })
 
         // Redirect to role-specific dashboards
+        const permissions = response.data.permissions || []
         const role = response.data.user.role
         let target = '/dashboard'
-        if (role === 'doctor') target = '/doctor/dashboard'
+        if (role === 'super_admin') target = '/super-admin'
+        else if (hasErpPermission(permissions)) target = erpHomePathForPermissions(permissions)
+        else if (role === 'doctor') target = '/doctor/dashboard'
         else if (role === 'assistant') target = '/assistant/dashboard'
         else if (role === 'sub-doctor') target = '/doctor/dashboard'
         this.$router.push(target).catch(() => {})
@@ -150,4 +161,8 @@ export default {
 
 <style lang="scss">
 @import '@core/scss/vue/pages/page-auth.scss';
+.auth-inner .card { border-radius: 6px; border: 1px solid #e5e7eb; box-shadow: 0 12px 35px rgba(23, 32, 42, 0.09); }
+.erp-auth__mark { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 6px; background: #16856b; color: #fff; font-weight: 800; }
+.auth-language-switcher { top: 1rem; right: 1rem; z-index: 2; }
+[dir='rtl'] .auth-language-switcher { right: auto; left: 1rem; }
 </style>

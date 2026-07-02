@@ -2,6 +2,10 @@ const path = require('path')
 
 module.exports = {
   publicPath: '/',
+  devServer: {
+    port: 8081,
+    historyApiFallback: true,
+  },
   parallel: false,
   productionSourceMap: false,
   lintOnSave: false,

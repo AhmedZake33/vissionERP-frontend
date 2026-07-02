@@ -1,63 +1,43 @@
 <template>
-  <div id="dropdown-grouped" variant="link" class="dropdown-language" right>
-    <span class="pointer mx-1"
-          v-for="localeObj in locales"
-          v-if="$i18n.locale != localeObj.locale"
-          :key="localeObj.locale" @click="changeLocal(localeObj)">
-      <span class="ml-50">{{ localeObj.name }}</span>
-    </span>
-  </div>
+  <b-nav-item-dropdown right class="dropdown-language">
+    <template #button-content>
+      <feather-icon icon="GlobeIcon" size="20" />
+      <span class="ml-50 d-none d-md-inline">{{ currentLocaleName }}</span>
+    </template>
+    <b-dropdown-item
+      v-for="locale in locales"
+      :key="locale.code"
+      :active="currentLocale === locale.code"
+      @click="changeLocale(locale.code)"
+    >
+      {{ locale.name }}
+    </b-dropdown-item>
+  </b-nav-item-dropdown>
 </template>
 
 <script>
-import { BNavItemDropdown, BDropdownItem, BImg } from 'bootstrap-vue'
+import { BDropdownItem, BNavItemDropdown } from 'bootstrap-vue'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
-    BNavItemDropdown,
     BDropdownItem,
-    BImg,
+    BNavItemDropdown,
   },
   computed: {
-    currentLocale() {
-      return this.locales.find(l => l.locale === this.$i18n.locale)
+    ...mapGetters('language', ['currentLocale']),
+    locales() {
+      return [
+        { code: 'en', name: 'English' },
+        { code: 'ar', name: 'العربية' },
+      ]
     },
-  },
-  mounted() {
-    const lang = localStorage.getItem('locale') || 'en'
-    if (lang) {
-      this.$i18n.locale = lang
-      const local = this.locales.find(l => l.locale === this.$i18n.locale)
-      this.$store.commit('appConfig/SET_RTL', local.RTL)
-    }
-  },
-  setup() {
-    const locales = [
-      {
-        locale: 'en',
-        img: '',
-        name: 'English',
-        RTL: false,
-      },
-      {
-        locale: 'ar',
-        img: '',
-        name: 'عربى',
-        RTL: true,
-      },
-    ]
-    return {
-      locales,
-    }
+    currentLocaleName() {
+      return this.locales.find(locale => locale.code === this.currentLocale)?.name || 'English'
+    },
   },
   methods: {
-    changeLocal(localeObj) {
-      this.$store.commit('appConfig/SET_RTL', localeObj.RTL)
-      this.$i18n.locale = localeObj.locale
-      localStorage.setItem('locale', localeObj.locale)
-    },
+    ...mapActions('language', ['changeLocale']),
   },
 }
 </script>
-
-<style></style>

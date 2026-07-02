@@ -45,7 +45,7 @@
               to="dashboard"
             >
               <h2 class="brand-text mb-0">
-                {{ $t('clinic.appName') || appName }}
+                {{ $t('erp.appName') || appName }}
               </h2>
             </b-link>
           </li>

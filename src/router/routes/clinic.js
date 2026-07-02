@@ -18,6 +18,15 @@ export default [
     },
   },
   {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/Register.vue'),
+    meta: {
+      layout: 'full',
+      requiresAuth: false,
+    },
+  },
+  {
     path: '/reset-password',
     name: 'reset-password',
     component: () => import('@/views/ResetPassword.vue'),

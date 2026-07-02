@@ -10,7 +10,7 @@ Vue.prototype.$can = function(action, resource) {
 Vue.prototype.$hasPermission = function(permission) {
   const user = JSON.parse(localStorage.getItem('user') || 'null')
   if (!user) return false
-  // Removed: Admin bypass - now admins must have explicit permissions too
+  if (['admin', 'super_admin', 'company_owner'].includes(user.role)) return true
   const permissions = JSON.parse(localStorage.getItem('permissions') || '[]')
   return permissions.includes(permission)
 }
@@ -19,7 +19,7 @@ Vue.prototype.$hasPermission = function(permission) {
 Vue.prototype.$hasAnyPermission = function(permissions) {
   const user = JSON.parse(localStorage.getItem('user') || 'null')
   if (!user) return false
-  // Removed: Admin bypass - now admins must have explicit permissions too
+  if (['admin', 'super_admin', 'company_owner'].includes(user.role)) return true
   const userPerms = JSON.parse(localStorage.getItem('permissions') || '[]')
   return permissions.some(p => userPerms.includes(p))
 }

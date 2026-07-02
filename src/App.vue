@@ -74,8 +74,10 @@ export default {
     }
 
     // Set RTL
-    const { isRTL } = $themeConfig.layout
+    const isRTL = (localStorage.getItem('locale') || 'en') === 'ar'
+    store.commit('appConfig/SET_RTL', isRTL)
     document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr')
+    document.documentElement.setAttribute('lang', isRTL ? 'ar' : 'en')
   },
   setup() {
     const { skin, skinClasses } = useAppConfig()

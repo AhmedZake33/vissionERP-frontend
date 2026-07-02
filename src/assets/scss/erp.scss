@@ -1,0 +1,236 @@
+.erp-page {
+  --erp-ink: #17202a;
+  --erp-muted: #6b7280;
+  --erp-line: #e5e7eb;
+  --erp-green: #16856b;
+  --erp-blue: #2764d8;
+  color: var(--erp-ink);
+}
+
+.erp-page__heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.erp-page__heading h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.erp-eyebrow {
+  margin-bottom: 0.35rem;
+  color: var(--erp-green);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.erp-panel.card {
+  border: 1px solid var(--erp-line);
+  border-radius: 6px;
+  box-shadow: 0 5px 18px rgba(31, 41, 55, 0.05);
+}
+
+.erp-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.erp-stat-card.card {
+  min-height: 92px;
+  border: 1px solid var(--erp-line);
+  border-radius: 6px;
+  box-shadow: 0 5px 18px rgba(31, 41, 55, 0.04);
+}
+
+.erp-stat-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.erp-stat-card span {
+  color: var(--erp-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.erp-stat-card strong {
+  margin-top: 0.4rem;
+  font-size: 1.25rem;
+  letter-spacing: 0;
+}
+
+.erp-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.erp-search {
+  flex: 1 1 420px;
+  min-width: 320px;
+  max-width: none;
+}
+
+.erp-filter {
+  flex: 0 0 165px;
+  max-width: 165px;
+}
+
+.erp-toolbar > .form-control[type='date'],
+.erp-toolbar > input[type='date'].form-control {
+  flex: 0 0 145px;
+  max-width: 145px;
+  min-width: 145px;
+  padding-right: 0.65rem;
+  padding-left: 0.65rem;
+}
+
+.erp-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+.erp-empty {
+  display: flex;
+  min-height: 180px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  color: var(--erp-muted);
+}
+
+.erp-empty strong {
+  color: var(--erp-ink);
+}
+
+.erp-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+  color: var(--erp-muted);
+}
+
+[dir='rtl'] {
+  .erp-page,
+  .erp-panel,
+  .erp-page__heading,
+  .modal-content,
+  .dropdown-menu {
+    text-align: right;
+  }
+
+  .erp-page__heading,
+  .erp-toolbar,
+  .erp-section-title,
+  .erp-pagination {
+    direction: rtl;
+  }
+
+  .table th,
+  .table td,
+  .form-group label,
+  .custom-select,
+  .form-control {
+    text-align: right;
+  }
+
+  .input-group-prepend {
+    order: 2;
+  }
+
+  .input-group-append {
+    order: -1;
+  }
+}
+
+.erp-pagination .pagination {
+  margin-bottom: 0;
+}
+
+.erp-details {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.6fr) 1.4fr;
+  gap: 0.75rem 1rem;
+  margin: 0;
+}
+
+.erp-details dt {
+  color: var(--erp-muted);
+  font-weight: 500;
+}
+
+.erp-details dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.erp-metric {
+  min-height: 124px;
+  border: 1px solid var(--erp-line);
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+.erp-metric__icon {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.erp-metric__value {
+  margin: 0.8rem 0 0.2rem;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.erp-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.erp-section-title h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+@media (max-width: 767.98px) {
+  .erp-page__heading,
+  .erp-toolbar,
+  .erp-pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .erp-page__heading .btn,
+  .erp-search,
+  .erp-filter,
+  .erp-toolbar > .form-control[type='date'],
+  .erp-toolbar > input[type='date'].form-control {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    flex-basis: auto;
+  }
+}

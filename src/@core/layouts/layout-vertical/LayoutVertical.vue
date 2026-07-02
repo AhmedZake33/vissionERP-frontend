@@ -110,41 +110,31 @@ export default {
       return this.$store.getters['auth/isLoggedIn']
     },
     filteredNavItems() {
-    const role = this.$store.getters['auth/userRole']
-    console.log('Current role:', role)
+      const user = this.$store.state.auth.user || JSON.parse(localStorage.getItem('user') || 'null')
+      const role = user?.role || ''
+      const permissions = this.$store.state.auth.permissions || []
+      const erpOnlyRoles = ['company_owner']
 
-    function filterByRole(items) {
-      return items
+      const canView = item => {
+        if (erpOnlyRoles.includes(role) && item.app === 'clinic') return false
+        if (item.roles && !item.roles.includes(role)) return false
+        if (item.resource && item.resource.toLowerCase() !== role.toLowerCase()) return false
+        if (role === 'super_admin') return !item.permission
+        if (!item.permission) return true
+        if (['admin', 'company_owner'].includes(role)) return true
+        return permissions.includes(item.permission)
+      }
+
+      const filterItems = items => items
         .map(item => {
-          // Recursively filter children
-          let children = []
-          if (item.children && item.children.length > 0) {
-            children = filterByRole(item.children)
-          }
-
-          // Check role restriction - use resource property instead of meta.role
-          const allowed =
-            !item.resource ||
-            item.resource.toLowerCase() === role.toLowerCase()
-
-          // Keep this item only if:
-          //  - user is allowed
-          //  - OR it has allowed children
-          if (allowed) {
-            return { ...item, children: children.filter(Boolean) }
-          }
-          if (children.length > 0) {
-            return { ...item, children: children.filter(Boolean) }
-          }
-          return null
+          const children = item.children ? filterItems(item.children) : null
+          if (!canView(item) && !children?.length) return null
+          return children ? { ...item, children } : item
         })
         .filter(Boolean)
-    }
 
-    const filtered = filterByRole(require('@/navigation/vertical').default)
-    console.log('Filtered nav items:', filtered)
-    return filtered
-  },
+      return filterItems(require('@/navigation/vertical').default)
+    },
   },
   watch: {
     isLoggedIn: {

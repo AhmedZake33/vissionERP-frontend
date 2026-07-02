@@ -20,7 +20,7 @@ const hasPermission = (permission) => {
   if (!permission) return true
   const user = JSON.parse(localStorage.getItem('user') || 'null')
   if (!user) return false
-  // Removed: Admin bypass - now admins must have explicit permissions too
+  if (['admin', 'super_admin', 'company_owner'].includes(user.role)) return true
   const permissions = JSON.parse(localStorage.getItem('permissions') || '[]')
   return permissions.includes(permission)
 }

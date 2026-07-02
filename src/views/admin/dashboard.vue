@@ -26,14 +26,6 @@
           color="danger"
         />
       </b-col>
-      <b-col cols="12" sm="6" lg="3">
-        <statistic-card-vertical
-          icon="DollarSignIcon"
-          :statistic="`$${stats.total_revenue}`"
-          statistic-title="Total Revenue"
-          color="warning"
-        />
-      </b-col>
     </b-row>
 
     <!-- Doctors Table -->
@@ -425,7 +417,6 @@ export default {
         active_subscriptions: 0,
         expired_subscriptions: 0,
         no_subscription: 0,
-        total_revenue: 0,
       },
       loading: false,
       saving: false,

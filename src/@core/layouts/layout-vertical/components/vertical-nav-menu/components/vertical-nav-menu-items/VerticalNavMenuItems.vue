@@ -1,7 +1,7 @@
 <template>
   <ul>
     <component
-      v-for="item in filteredItems"
+      v-for="item in items"
       :is="resolveNavItemComponent(item)"
       :key="item.header || item.title"
       :item="item"
@@ -11,7 +11,7 @@
 
 <script>
 import { resolveVerticalNavMenuItemComponent as resolveNavItemComponent } from '@core/layouts/utils'
-import { provide, ref, computed } from '@vue/composition-api'
+import { provide, ref } from '@vue/composition-api'
 import VerticalNavMenuHeader from '../vertical-nav-menu-header'
 import VerticalNavMenuLink from '../vertical-nav-menu-link/VerticalNavMenuLink.vue'
 import VerticalNavMenuGroup from '../vertical-nav-menu-group/VerticalNavMenuGroup.vue'
@@ -28,24 +28,11 @@ export default {
       required: true,
     },
   },
-  setup(props) {
+  setup() {
     provide('openGroups', ref([]))
-
-    // 🔑 Clean items before rendering
-    const filteredItems = computed(() =>
-      props.items.map(item => {
-        // If it has children but they are empty after filtering, remove children
-        if (item.children && item.children.length === 0) {
-          const { children, ...rest } = item
-          return rest
-        }
-        return item
-      })
-    )
 
     return {
       resolveNavItemComponent,
-      filteredItems,
     }
   },
 }

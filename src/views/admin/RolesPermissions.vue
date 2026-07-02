@@ -49,6 +49,7 @@
             <template #cell(actions)="data">
               <div class="d-flex align-items-center">
                 <b-button
+                  v-if="!data.item.system"
                   variant="flat-primary"
                   size="sm"
                   class="btn-icon"
@@ -57,7 +58,7 @@
                   <feather-icon icon="EditIcon" />
                 </b-button>
                 <b-button
-                  v-if="!isProtectedRole(data.item.name)"
+                  v-if="!data.item.system"
                   variant="flat-danger"
                   size="sm"
                   class="btn-icon"
@@ -83,7 +84,7 @@
                   {{ selectedRole.name }}
                 </b-badge>
               </h4>
-              <b-button variant="success" size="sm" :disabled="saving" @click="savePermissions()">
+              <b-button v-if="!selectedRole.system" variant="success" size="sm" :disabled="saving" @click="savePermissions()">
                 <b-spinner v-if="saving" small class="mr-50" />
                 <feather-icon v-else icon="SaveIcon" class="mr-50" />
                 {{ $t('actions.save') }}
@@ -105,7 +106,7 @@
                 >
                   <h6 class="mb-0 text-capitalize">
                     <feather-icon :icon="getGroupIcon(group)" class="mr-50" />
-                    {{ $t(`roles.groups.${group}`) || group }}
+                    {{ formatGroupLabel(group) }}
                   </h6>
                 </b-form-checkbox>
               </div>
@@ -122,7 +123,8 @@
                     v-model="selectedPermissions"
                     :value="perm.name"
                   >
-                    <small>{{ formatPermissionLabel(perm.name) }}</small>
+                    <span class="permission-label">{{ formatPermissionLabel(perm.name) }}</span>
+                    <small class="permission-code text-muted">{{ perm.name }}</small>
                   </b-form-checkbox>
                 </b-col>
               </b-row>
@@ -447,12 +449,117 @@ export default {
       return icons[group] || 'CircleIcon'
     },
 
+    formatGroupLabel(group) {
+      const labels = this.permissionModuleLabels()[group]
+      if (labels) return labels
+      const translation = this.$te(`roles.groups.${group}`) ? this.$t(`roles.groups.${group}`) : ''
+      return translation || this.humanizePermissionPart(group)
+    },
+
     formatPermissionLabel(name) {
-      // "view-clients" → "View Clients"
+      const exactLabel = this.permissionExactLabels()[name]
+      if (exactLabel) return exactLabel
+
+      if (name.startsWith('erp.')) {
+        const parts = name.split('.')
+        const module = parts[1]
+        const action = parts[2]
+        const moduleLabel = this.permissionModuleLabels()[module] || this.humanizePermissionPart(module)
+        const actionLabel = this.permissionActionLabels()[action] || this.humanizePermissionPart(action)
+        return `${actionLabel} ${moduleLabel}`
+      }
+
       return name
-        .split('-')
-        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .split(/[.-]/)
+        .map(part => this.humanizePermissionPart(part))
         .join(' ')
+    },
+
+    permissionModuleLabels() {
+      const ar = {
+        access: 'إدارة الفريق والصلاحيات',
+        categories: 'التصنيفات',
+        customers: 'العملاء',
+        employees: 'الموظفين',
+        expenses: 'المصروفات',
+        inventory: 'المخزون',
+        invoices: 'الفواتير',
+        'invoice-payments': 'مدفوعات الفواتير',
+        operations: 'العمليات',
+        products: 'المنتجات',
+        'raw-materials': 'المواد الخام',
+        'raw-material-purchases': 'فواتير شراء المواد الخام',
+        'raw-material-payments': 'مدفوعات المواد الخام',
+        'raw-material-operations': 'عمليات المواد الخام',
+        reports: 'التقارير',
+        salaries: 'الرواتب',
+        suppliers: 'الموردين',
+      }
+      const en = {
+        access: 'Team access',
+        categories: 'Categories',
+        customers: 'Customers',
+        employees: 'Employees',
+        expenses: 'Expenses',
+        inventory: 'Inventory',
+        invoices: 'Invoices',
+        'invoice-payments': 'Invoice payments',
+        operations: 'Operations',
+        products: 'Products',
+        'raw-materials': 'Raw materials',
+        'raw-material-purchases': 'Raw material purchase invoices',
+        'raw-material-payments': 'Raw material payments',
+        'raw-material-operations': 'Raw material operations',
+        reports: 'Reports',
+        salaries: 'Salaries',
+        suppliers: 'Suppliers',
+      }
+      return this.isArabicLocale() ? ar : en
+    },
+
+    permissionActionLabels() {
+      const ar = {
+        view: 'عرض',
+        create: 'إضافة',
+        edit: 'تعديل',
+        delete: 'حذف',
+        manage: 'إدارة',
+      }
+      const en = {
+        view: 'View',
+        create: 'Create',
+        edit: 'Edit',
+        delete: 'Delete',
+        manage: 'Manage',
+      }
+      return this.isArabicLocale() ? ar : en
+    },
+
+    permissionExactLabels() {
+      const ar = {
+        'erp.access.view': 'عرض صفحة الفريق والصلاحيات',
+        'erp.access.manage': 'إدارة المستخدمين والأدوار والصلاحيات',
+        'erp.operations.view': 'عرض العمليات',
+      }
+      const en = {
+        'erp.access.view': 'View team and permissions page',
+        'erp.access.manage': 'Manage users, roles and permissions',
+        'erp.operations.view': 'View operations',
+      }
+      return this.isArabicLocale() ? ar : en
+    },
+
+    humanizePermissionPart(value) {
+      return String(value || '')
+        .replace(/^erp$/, 'ERP')
+        .split(/[-_]/)
+        .filter(Boolean)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+    },
+
+    isArabicLocale() {
+      return String(this.$i18n.locale || '').toLowerCase().startsWith('ar')
     },
   },
 }
@@ -469,6 +576,20 @@ export default {
   background: rgba(0, 0, 0, 0.02);
   border-radius: 0.5rem;
   padding: 0.75rem;
+}
+.permission-label {
+  display: block;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.permission-code {
+  display: block;
+  direction: ltr;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  margin-top: 0.15rem;
+  word-break: break-word;
 }
 </style>
 
