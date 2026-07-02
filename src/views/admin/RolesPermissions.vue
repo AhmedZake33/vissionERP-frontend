@@ -445,6 +445,7 @@ export default {
         subscriptions: 'CreditCardIcon',
         roles: 'ShieldIcon',
         permissions: 'KeyIcon',
+        'invoice-returns': 'RotateCcwIcon',
       }
       return icons[group] || 'CircleIcon'
     },
@@ -485,6 +486,7 @@ export default {
         inventory: 'المخزون',
         invoices: 'الفواتير',
         'invoice-payments': 'مدفوعات الفواتير',
+        'invoice-returns': 'مرتجعات الفواتير',
         operations: 'العمليات',
         products: 'المنتجات',
         'raw-materials': 'المواد الخام',
@@ -504,6 +506,7 @@ export default {
         inventory: 'Inventory',
         invoices: 'Invoices',
         'invoice-payments': 'Invoice payments',
+        'invoice-returns': 'Invoice returns',
         operations: 'Operations',
         products: 'Products',
         'raw-materials': 'Raw materials',
@@ -540,11 +543,17 @@ export default {
         'erp.access.view': 'عرض صفحة الفريق والصلاحيات',
         'erp.access.manage': 'إدارة المستخدمين والأدوار والصلاحيات',
         'erp.operations.view': 'عرض العمليات',
+        'erp.invoice-returns.view': 'عرض مرتجعات الفواتير',
+        'erp.invoice-returns.create': 'إنشاء مرتجع فاتورة',
+        'erp.invoice-returns.delete': 'حذف مرتجع فاتورة',
       }
       const en = {
         'erp.access.view': 'View team and permissions page',
         'erp.access.manage': 'Manage users, roles and permissions',
         'erp.operations.view': 'View operations',
+        'erp.invoice-returns.view': 'View invoice returns',
+        'erp.invoice-returns.create': 'Create invoice return',
+        'erp.invoice-returns.delete': 'Delete invoice return',
       }
       return this.isArabicLocale() ? ar : en
     },

@@ -5,6 +5,7 @@
   >
     <div class="content-overlay" />
     <div class="header-navbar-shadow" />
+    <global-api-loader />
     <transition
       :name="routerTransition"
       mode="out-in"
@@ -35,10 +36,12 @@
 <script>
 import AppBreadcrumb from '@core/layouts/components/AppBreadcrumb.vue'
 import useAppConfig from '@core/app-config/useAppConfig'
+import GlobalApiLoader from '@/components/GlobalApiLoader.vue'
 
 export default {
   components: {
     AppBreadcrumb,
+    GlobalApiLoader,
   },
   setup() {
     const { routerTransition, contentWidth } = useAppConfig()

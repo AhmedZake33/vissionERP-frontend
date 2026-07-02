@@ -35,7 +35,13 @@ export default {
     print: id => api.get(`/erp/invoices/${id}/print`),
     payments: id => api.get(`/erp/invoices/${id}/payments`),
     pay: (id, data) => api.post(`/erp/invoices/${id}/payments`, data),
+    return: (id, data) => api.post(`/erp/invoices/${id}/returns`, data),
     deletePayment: (invoiceId, paymentId) => api.delete(`/erp/invoices/${invoiceId}/payments/${paymentId}`),
+  },
+  invoiceReturns: {
+    list: (params = {}) => api.get('/erp/invoice-returns', { params }),
+    get: id => api.get(`/erp/invoice-returns/${id}`),
+    remove: id => api.delete(`/erp/invoice-returns/${id}`),
   },
   stockMovements: {
     list: (params = {}) => api.get('/erp/stock-movements', { params }),

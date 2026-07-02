@@ -82,6 +82,12 @@ export default [
     meta: { requiresAuth: true, permissions: ['erp.invoice-payments.view'], pageTitle: 'Payments', breadcrumb: erpBreadcrumb('Payments') },
   },
   {
+    path: '/erp/returns',
+    name: 'erp-returns',
+    component: () => import('@/views/erp/Returns.vue'),
+    meta: { requiresAuth: true, permissions: ['erp.invoice-returns.view'], pageTitle: 'Returns', breadcrumb: erpBreadcrumb('Returns') },
+  },
+  {
     path: '/erp/expenses',
     name: 'erp-expenses',
     component: () => import('@/views/erp/Expenses.vue'),

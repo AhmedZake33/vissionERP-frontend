@@ -1,4 +1,4 @@
-﻿{
+{
   "clinic": {
     "name": "Medical Clinic",
     "appName": "Clinic",
@@ -63,8 +63,7 @@
       "epilepsy": "Epilepsy",
       "arthritis": "Arthritis",
       "copd": "COPD"
-    }
-    ,
+    },
     "countryCode": "Country Code",
     "selectCountryCode": "-- Select country code --"
   },
@@ -794,7 +793,6 @@
     "enableSound": "Enable Sound",
     "soundEnabled": "Sound notifications enabled!"
   },
-
   "services": {
     "myServices": "Additional Services",
     "addService": "Add Service",
@@ -867,7 +865,8 @@
       "employees": "Employees",
       "salaries": "Salaries",
       "reports": "Reports",
-      "accessControl": "Team, Roles & Permissions"
+      "accessControl": "Team, Roles & Permissions",
+      "returns": "Returns"
     },
     "common": {
       "add": "Add",
@@ -1275,6 +1274,28 @@
       "confirmPassword": "Confirm password",
       "createUser": "Create user",
       "selectRole": "Select role"
+    },
+    "returns": {
+      "eyebrow": "Sales returns",
+      "title": "Returns",
+      "subtitle": "Return sold products, restore stock, and update invoice balances.",
+      "create": "Create return",
+      "details": "Return details",
+      "returnNumber": "Return number",
+      "returnDate": "Return date",
+      "returnTotal": "Return total",
+      "totalReturns": "Total returns",
+      "totalReturned": "Total returned",
+      "selectInvoice": "Select invoice",
+      "searchPlaceholder": "Return, invoice, customer, phone or email...",
+      "soldQuantity": "Sold",
+      "returnableQuantity": "Returnable",
+      "reason": "Reason",
+      "save": "Save return",
+      "saved": "Return saved successfully.",
+      "deleted": "Return deleted.",
+      "deleteTitle": "Delete return?",
+      "deleteText": "Returned quantities will be removed from stock and the invoice totals will be restored."
     }
   },
   "auth": {

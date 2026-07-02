@@ -94,6 +94,13 @@ export default [
     permission: 'erp.invoice-payments.view',
   },
   {
+    title: 'erp.navigation.returns',
+    i18n: true,
+    route: 'erp-returns',
+    icon: 'RotateCcwIcon',
+    permission: 'erp.invoice-returns.view',
+  },
+  {
     title: 'erp.navigation.expenses',
     i18n: true,
     route: 'erp-expenses',

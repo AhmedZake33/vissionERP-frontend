@@ -5,6 +5,7 @@ export default {
   state: {
     windowWidth: 0, // Start with 0 to force update on mount
     shallShowOverlay: false,
+    apiLoadingCount: 0,
   },
   getters: {
     currentBreakPoint: state => {
@@ -15,6 +16,7 @@ export default {
       if (windowWidth >= $themeBreakpoints.sm) return 'sm'
       return 'xs'
     },
+    isApiLoading: state => state.apiLoadingCount > 0,
   },
   mutations: {
     UPDATE_WINDOW_WIDTH(state, val) {
@@ -22,6 +24,12 @@ export default {
     },
     TOGGLE_OVERLAY(state, val) {
       state.shallShowOverlay = val !== undefined ? val : !state.shallShowOverlay
+    },
+    START_API_LOADING(state) {
+      state.apiLoadingCount += 1
+    },
+    FINISH_API_LOADING(state) {
+      state.apiLoadingCount = Math.max(state.apiLoadingCount - 1, 0)
     },
   },
   actions: {},
