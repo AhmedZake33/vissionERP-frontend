@@ -866,7 +866,8 @@
       "salaries": "Salaries",
       "reports": "Reports",
       "accessControl": "Team, Roles & Permissions",
-      "returns": "Returns"
+      "returns": "Returns",
+      "employeeAdjustments": "Employee adjustments"
     },
     "common": {
       "add": "Add",
@@ -1204,7 +1205,9 @@
       "paymentStatus": "Payment status",
       "paymentDate": "Payment date",
       "calculatedNet": "Calculated net salary:",
-      "deleteTitle": "Delete salary record?"
+      "deleteTitle": "Delete salary record?",
+      "applyAdjustments": "Apply pending employee adjustments for this month",
+      "adjustmentSummary": "Pending monthly bonuses / deductions:"
     },
     "reports": {
       "eyebrow": "Business intelligence",
@@ -1296,6 +1299,29 @@
       "deleted": "Return deleted.",
       "deleteTitle": "Delete return?",
       "deleteText": "Returned quantities will be removed from stock and the invoice totals will be restored."
+    },
+    "employeeAdjustments": {
+      "eyebrow": "Payroll adjustments",
+      "title": "Employee bonuses & deductions",
+      "subtitle": "Record monthly bonuses and deductions before generating salary records.",
+      "addAdjustment": "Add adjustment",
+      "editAdjustment": "Edit adjustment",
+      "records": "Adjustment records",
+      "bonusesTotal": "Total bonuses",
+      "deductionsTotal": "Total deductions",
+      "pending": "Pending",
+      "applied": "Applied",
+      "bonus": "Bonus",
+      "deduction": "Deduction",
+      "allTypes": "All types",
+      "allSalaryStatuses": "All salary statuses",
+      "searchPlaceholder": "Search employee, title or notes",
+      "titleField": "Title",
+      "amount": "Amount",
+      "salaryStatus": "Salary status",
+      "saved": "Adjustment saved successfully.",
+      "deleted": "Adjustment deleted.",
+      "deleteTitle": "Delete adjustment?"
     }
   },
   "auth": {

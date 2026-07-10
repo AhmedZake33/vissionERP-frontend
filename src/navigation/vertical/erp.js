@@ -122,6 +122,13 @@ export default [
     permission: 'erp.employees.view',
   },
   {
+    title: 'erp.navigation.employeeAdjustments',
+    i18n: true,
+    route: 'erp-employee-adjustments',
+    icon: 'PercentIcon',
+    permission: 'erp.employee-adjustments.view',
+  },
+  {
     title: 'erp.navigation.salaries',
     i18n: true,
     route: 'erp-salaries',

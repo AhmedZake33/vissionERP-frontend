@@ -56,6 +56,10 @@ export default {
   },
   expenses: resource('expenses'),
   employees: resource('employees'),
+  employeeAdjustments: {
+    ...resource('employee-adjustments'),
+    summary: (params = {}) => api.get('/erp/employee-adjustments/summary', { params }),
+  },
   salaries: resource('salaries'),
   reports: {
     summary: (params = {}) => api.get('/erp/reports/summary', { params }),

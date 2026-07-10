@@ -54,10 +54,18 @@
       <b-form @submit.prevent="save">
         <b-row>
           <b-col cols="12" md="6"><b-form-group :label="$t('erp.employees.employee')"><b-form-select v-model="form.employee_id" :options="employeeOptions" required @change="selectEmployee" /></b-form-group></b-col>
-          <b-col cols="12" md="6"><b-form-group :label="$t('erp.salaries.salaryMonth')"><b-form-input v-model="form.salary_month" type="date" required /></b-form-group></b-col>
+          <b-col cols="12" md="6"><b-form-group :label="$t('erp.salaries.salaryMonth')"><b-form-input v-model="form.salary_month" type="date" required @change="fetchAdjustmentSummary" /></b-form-group></b-col>
           <b-col cols="12" md="4"><b-form-group :label="$t('erp.salaries.basicSalary')"><b-form-input v-model.number="form.basic_salary" type="number" min="0" step="0.01" required /></b-form-group></b-col>
           <b-col cols="12" md="4"><b-form-group :label="$t('erp.salaries.bonuses')"><b-form-input v-model.number="form.bonuses" type="number" min="0" step="0.01" /></b-form-group></b-col>
           <b-col cols="12" md="4"><b-form-group :label="$t('erp.salaries.deductions')"><b-form-input v-model.number="form.deductions" type="number" min="0" step="0.01" /></b-form-group></b-col>
+          <b-col cols="12">
+            <b-alert show variant="light-info">
+              <b-form-checkbox v-model="form.apply_adjustments" :disabled="editing" switch class="mb-50" @change="fetchAdjustmentSummary">
+                {{ $t('erp.salaries.applyAdjustments') }}
+              </b-form-checkbox>
+              <span>{{ $t('erp.salaries.adjustmentSummary') }} <strong class="text-success">{{ currency(adjustmentSummary.bonuses) }}</strong> / <strong class="text-danger">{{ currency(adjustmentSummary.deductions) }}</strong></span>
+            </b-alert>
+          </b-col>
           <b-col cols="12" md="6"><b-form-group :label="$t('erp.salaries.paymentStatus')"><b-form-select v-model="form.payment_status" :options="paymentStatuses" /></b-form-group></b-col>
           <b-col cols="12" md="6"><b-form-group :label="$t('erp.salaries.paymentDate')"><b-form-input v-model="form.payment_date" type="date" /></b-form-group></b-col>
           <b-col cols="12"><b-alert show variant="light-success">{{ $t('erp.salaries.calculatedNet') }} <strong>{{ currency(netSalary) }}</strong></b-alert></b-col>
@@ -84,6 +92,7 @@ export default {
       editing: false,
       editId: null,
       stats: this.emptyStats(),
+      adjustmentSummary: { bonuses: 0, deductions: 0 },
       filters: { employee_id: '', payment_status: '', month: '' },
       pagination: { current_page: 1, per_page: 15, total: 0 },
       form: this.emptyForm(),
@@ -127,7 +136,7 @@ export default {
       return this.$store.getters['auth/hasPermission'](permission)
     },
     emptyForm() {
-      return { employee_id: null, salary_month: new Date().toISOString().slice(0, 10), basic_salary: 0, bonuses: 0, deductions: 0, payment_status: 'unpaid', payment_date: '', notes: '' }
+      return { employee_id: null, salary_month: new Date().toISOString().slice(0, 10), basic_salary: 0, bonuses: 0, deductions: 0, apply_adjustments: true, payment_status: 'unpaid', payment_date: '', notes: '' }
     },
     emptyStats() {
       return { total_count: 0, total_net_salary: 0, paid_total: 0, unpaid_total: 0, paid_count: 0, unpaid_count: 0 }
@@ -160,18 +169,31 @@ export default {
     openCreate() {
       this.editing = false
       this.form = this.emptyForm()
+      this.adjustmentSummary = { bonuses: 0, deductions: 0 }
       this.modal = true
     },
     async openEdit(item) {
       const { data } = await erp.salaries.get(item.id)
       this.editing = true
       this.editId = item.id
-      this.form = { employee_id: data.employee_id, salary_month: data.salary_month, basic_salary: Number(data.basic_salary), bonuses: Number(data.bonuses), deductions: Number(data.deductions), payment_status: data.payment_status, payment_date: data.payment_date || '', notes: data.notes || '' }
+      this.form = { employee_id: data.employee_id, salary_month: data.salary_month, basic_salary: Number(data.basic_salary), bonuses: Number(data.bonuses), deductions: Number(data.deductions), apply_adjustments: false, payment_status: data.payment_status, payment_date: data.payment_date || '', notes: data.notes || '' }
+      this.adjustmentSummary = { bonuses: Number(data.bonuses || 0), deductions: Number(data.deductions || 0) }
       this.modal = true
     },
     selectEmployee() {
       const employee = this.employees.find(item => item.id === this.form.employee_id)
       if (employee) this.form.basic_salary = Number(employee.salary || 0)
+      this.fetchAdjustmentSummary()
+    },
+    async fetchAdjustmentSummary() {
+      if (!this.form.employee_id || !this.form.salary_month || !this.form.apply_adjustments) return
+      const { data } = await erp.employeeAdjustments.summary({
+        employee_id: this.form.employee_id,
+        salary_month: this.form.salary_month,
+      })
+      this.adjustmentSummary = { bonuses: Number(data.bonuses || 0), deductions: Number(data.deductions || 0) }
+      this.form.bonuses = this.adjustmentSummary.bonuses
+      this.form.deductions = this.adjustmentSummary.deductions
     },
     async save() {
       this.saving = true

@@ -106,6 +106,12 @@ export default [
     meta: { requiresAuth: true, permissions: ['erp.employees.view'], pageTitle: 'Employees', breadcrumb: erpBreadcrumb('Employees') },
   },
   {
+    path: '/erp/employee-adjustments',
+    name: 'erp-employee-adjustments',
+    component: () => import('@/views/erp/EmployeeAdjustments.vue'),
+    meta: { requiresAuth: true, permissions: ['erp.employee-adjustments.view'], pageTitle: 'Employee Adjustments', breadcrumb: erpBreadcrumb('Employee Adjustments') },
+  },
+  {
     path: '/erp/salaries',
     name: 'erp-salaries',
     component: () => import('@/views/erp/Salaries.vue'),
